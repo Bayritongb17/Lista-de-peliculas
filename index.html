@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Películas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #ff4b5c, #ff84b8); /* Degradado de rojo a rosa */
+        }
+
+        .left-image, .right-image {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            z-index: -1; /* Asegura que las imágenes estén en el fondo */
+        }
+
+        .left-image {
+            left: 0;
+        }
+
+        .right-image {
+            right: 0;
+        }
+
+        .container {
+            width: 50%;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.85); /* Fondo blanco con transparencia */
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+            overflow-y: auto;
+            text-align: left;
+            max-height: 90vh; /* Asegura que el contenedor no se desborde */
+        }
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(to right, #ff4b5c, #ff84b8); /* Degradado de rojo a rosa */
+            -webkit-background-clip: text; /* Prefijo para compatibilidad */
+            background-clip: text; /* Propiedad estándar */
+            color: transparent;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        li {
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        li:hover {
+            background-color: #f1f1f1;
+            transform: translateX(10px); /* Efecto sutil al pasar el mouse */
+        }
+
+        .checkmark {
+            color: #4CAF50; /* Verde para el visto */
+            font-weight: bold;
+        }
+
+        .checkmark:before {
+            content: "✔";
+            margin-right: 8px;
+        }
+
+        .checked {
+            background-color: rgba(76, 175, 80, 0.3); /* Verde con opacidad (más transparente) */
+            color: #2b8a3e; /* Texto en verde oscuro */
+            font-weight: bold;
+        }
+
+        .checked:before {
+            content: "✔";
+            position: absolute;
+            left: 10px;
+            font-size: 20px;
+            color: #2b8a3e; /* Color verde para el icono */
+        }
+
+        /* Mejorando la tipografía */
+        .container p {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="images/spiderman.gif" class="left-image" alt="Spiderman">
+    <img src="images/hello kitty GIF.gif" class="right-image" alt="Hello Kitty">
+
+    <div class="container">
+        <h1>Películas</h1>
+        <ul id="movie-list">
+            <!-- Lista de películas generada con JavaScript -->
+        </ul>
+    </div>
+
+    <script>
+        // Lista de películas vistas y pendientes
+        const moviesVistas = [
+            "Un Novato En Apuros",
+            "Un Novato En Apuros Dos",
+            "Y Donde Están Las Rubias",
+            "Un Espía Y Medio",
+            "Norbit",
+            "Sextillizos",
+            "Ted",
+            "Letras Explícitas",
+            "Garra",
+            "Interestelar",
+            "Hasta El Último Hombre",
+            "La Teoría Del Todo",
+            "El Sorprendente Hombre Araña",
+            "El Sorprendente Hombre Araña Dos",
+            "Enredados",
+            "TinkerBell",
+            "La Bella Y La Bestia",
+            "Teen Beach Movie Uno",
+            "Teen Beach Movie Dos",
+            "Monster University",
+            "El Diario De La Princesa Uno",
+            "Juego De Gemelas",
+            "Entrenando A Papá",
+            "Cars: Una Aventura Sobre Ruedas",
+            "Buscando A Dory",
+            "Río",
+            "Ratatouille",
+            "Coco",
+            "Chestnut"
+        ];
+
+        const moviesPendientes = [
+            "El amor no cuesta nada",
+            "Los chicos del barrio",
+            "Chiquitito pero peligroso",
+            "Mi abuela es un peligro 1",
+            "Mi abuela es un peligro 2",
+            "Mi abuela es un peligro 3",
+            "Unsolved",
+            "Todo en un viernes",
+            "Tinkerbell 2",
+            "Tinkerbell 3",
+            "Tinkerbell 4",
+            "Tinkerbell 5",
+            "Maléfica",
+            "El diario de la princesa 2",
+            "Cars 2",
+            "Cars 3",
+            "Niñera a prueba de balas",
+            "Herbie",
+            "El rey león",
+            "Intensamente 1",
+            "Intensamente 2",
+            "Un día descabellado",
+            "Y donde está el fantasma",
+            "Súper cool",
+            "Ted 2",
+            "El documental de notorious",
+            "Quieren volverme loco 1",
+            "Quieren volver loco 2",
+            "Juice",
+            "Poetic justice",
+            "La dama y el vagabundo",
+            "La sirenita",
+            "Blancanieves",
+            "La cenicienta",
+            "Moana",
+            "Toy Story",
+            "Un viernes de locos",
+            "Hotel Transilvania",
+            "La vida secreta de tus mascotas",
+            "Sing"
+        ];
+
+        // Función para guardar el estado de las películas vistas en localStorage
+        function saveToLocalStorage() {
+            const checkedMovies = [...document.querySelectorAll('.movie-item.checked')].map(item => item.textContent.trim());
+            localStorage.setItem('checkedMovies', JSON.stringify(checkedMovies));
+        }
+
+        // Función para cargar el estado de las películas vistas desde localStorage
+        function loadFromLocalStorage() {
+            const checkedMovies = JSON.parse(localStorage.getItem('checkedMovies')) || [];
+            document.querySelectorAll('.movie-item').forEach(item => {
+                if (checkedMovies.includes(item.textContent.trim())) {
+                    item.classList.add('checked');
+                }
+            });
+        }
+
+        // Crear la lista de todas las películas dinámicamente
+        const movieList = document.getElementById('movie-list');
+        [...moviesVistas, ...moviesPendientes].forEach(movie => {
+            const li = document.createElement('li');
+            li.classList.add('movie-item');
+            li.textContent = movie;
+
+            // Evento para marcar/desmarcar la película como vista
+            li.addEventListener('click', () => {
+                li.classList.toggle('checked');
+                saveToLocalStorage();
+            });
+
+            movieList.appendChild(li);
+        });
+
+        // Cargar el estado de las películas vistas cuando la página se recarga
+        loadFromLocalStorage();
+    </script>
+
+</body>
+</html>
